@@ -13,7 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-s%v#mm9m*=11ke%@$oq2j90pk2pzs^ej0zhx$hl=nic^jrxkom"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*'] # We will narrow this down later
 
@@ -42,16 +43,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "gym_inventory.urls"
 
+# gym_inventory/settings.py
+
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # --- UPDATE THIS LINE ---
+        'DIRS': [BASE_DIR / 'templates'],
+        # ------------------------
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },

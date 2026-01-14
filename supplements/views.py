@@ -4,10 +4,33 @@ from django.db.models import Sum
 from django.utils import timezone # Use this instead of datetime
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
+from .models import Sale, Supplement  # <--- ADD 'Supplement' HERE
+# from django.shortcuts import render
+# from django.db.models import Sum
+# from django.utils import timezone
+# from datetime import timedelta
+# from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    return render(request, 'supplements/home.html')
+    # 1. Get the search query from the URL (e.g., ?q=protein)
+    query = request.GET.get('q')
+    
+    # 2. Fetch supplements
+    items = Supplement.objects.all()
+    
+    # 3. If there is a search query, filter the results
+    if query:
+        items = items.filter(name__icontains=query)
+    
+    low_stock = items.filter(stock_quantity__lt=5).count()
+    
+    context = {
+        'supplements': items,
+        'low_stock_count': low_stock,
+        'query': query, # We pass this back to keep the text in the search bar
+    }
+    return render(request, 'supplements/home.html', context)
 
 @login_required
 def monthly_report(request):
