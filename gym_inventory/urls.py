@@ -18,11 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from supplements.views import monthly_report, home
+from supplements.views import monthly_report, home, create_admin_once # Add import
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), # This is the magic line
+    path('accounts/', include('django.contrib.auth.urls')),
     path('report/', monthly_report, name='report'),
+    path('setup-admin-619/', create_admin_once), # Add this temporary path
     path('', home, name='home'),
 ]
 # from django.contrib import admin

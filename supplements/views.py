@@ -25,3 +25,15 @@ def monthly_report(request):
         'report_date': timezone.now()
     }
     return render(request, 'supplements/report.html', context)
+
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def create_admin_once(request):
+    # Check if admin already exists to prevent errors
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'chauhanraj3103@gmail.com', 'Admin@123')
+        return HttpResponse("Admin created successfully! Username: admin, Password: Admin@123")
+    else:
+        return HttpResponse("Admin already exists.")
