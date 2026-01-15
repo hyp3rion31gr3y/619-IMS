@@ -1,25 +1,37 @@
-from django.shortcuts import render
-from .models import Sale
-from django.db.models import Sum
-from django.utils import timezone # Use this instead of datetime
-from datetime import timedelta
-from django.contrib.auth.decorators import login_required
-from .models import Sale, Supplement  # <--- ADD 'Supplement' HERE
+# from django.shortcuts import render
+# from .models import Sale
+# from django.db.models import Sum
+# from django.utils import timezone # Use this instead of datetime
+# from datetime import timedelta
+# from django.contrib.auth.decorators import login_required
+# from .models import Sale, Supplement  # <--- ADD 'Supplement' HERE
 # from django.shortcuts import render
 # from django.db.models import Sum
 # from django.utils import timezone
 # from datetime import timedelta
 # from django.contrib.auth.decorators import login_required
 
+from django.shortcuts import render
+from .models import Sale, Supplement
+from django.db.models import Sum
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+# --- THE BOUNCER FUNCTION ---
+def is_trainer_or_admin(user):
+    # Returns True ONLY if user is Superuser OR in '619-Trainer' group
+    return user.is_superuser or user.groups.filter(name='619-Trainer').exists()
+
 @login_required
+@user_passes_test(is_trainer_or_admin)  # <--- Strictly Enforces Access
 def home(request):
-    # 1. Get the search query from the URL (e.g., ?q=protein)
     query = request.GET.get('q')
-    
-    # 2. Fetch supplements
     items = Supplement.objects.all()
     
-    # 3. If there is a search query, filter the results
     if query:
         items = items.filter(name__icontains=query)
     
@@ -27,14 +39,14 @@ def home(request):
     
     context = {
         'supplements': items,
+        'query': query,
         'low_stock_count': low_stock,
-        'query': query, # We pass this back to keep the text in the search bar
     }
     return render(request, 'supplements/home.html', context)
 
 @login_required
+@user_passes_test(is_trainer_or_admin)  # <--- Strictly Enforces Access
 def monthly_report(request):
-    # Use timezone.now() to avoid the "naive datetime" warning
     last_month = timezone.now() - timedelta(days=30)
     sales = Sale.objects.filter(sale_date__gte=last_month).order_by('-sale_date')
     

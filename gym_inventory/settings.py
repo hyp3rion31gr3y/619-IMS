@@ -117,6 +117,22 @@ JAZZMIN_SETTINGS = {
     "site_title": "619 Fitness",
     "site_header": "619 Inventory",
     "site_brand": "619 Fitness",
-    "welcome_sign": "Welcome to 619 Fitness",
-    "copyright": "619 Fitness Ltd",
+    
+    "topmenu_links": [
+        # Only show "Live Dashboard" to users with 'view_supplement' permission (Trainers/Admin)
+        {
+            "name": "Live Dashboard", 
+            "url": "home", 
+            "permissions": ["supplements.view_supplement"]
+        },
+        
+        # Only show "Monthly Reports" to users with 'view_sale' permission (Trainers/Admin)
+        {
+            "name": "Monthly Reports", 
+            "url": "report", 
+            "permissions": ["supplements.view_sale"]
+        },
+    ],
+    
+    "show_sidebar": True,
 }
