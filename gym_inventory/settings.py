@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['*'] # We will narrow this down later
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -111,3 +112,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "619 Fitness",
+    "site_header": "619 Inventory",
+    "site_brand": "619 Fitness",
+    "welcome_sign": "Welcome to 619 Fitness",
+    "copyright": "619 Fitness Ltd",
+}
