@@ -119,4 +119,13 @@ JAZZMIN_SETTINGS = {
     "site_brand": "619 Fitness",
     "welcome_sign": "Welcome to 619 Fitness",
     "copyright": "619 Fitness Ltd",
+    
+    "topmenu_links": [
+        # Removed "permissions" key so all staff can see these
+        {"name": "Live Dashboard", "url": "home"}, 
+        {"name": "Monthly Reports", "url": "report"},
+    ],
+
+    # This ensures the sidebar stays visible
+    "show_sidebar": True,
 }
